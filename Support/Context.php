@@ -128,6 +128,12 @@ class Context
 	public function termObject($term = '', $tax = '')
 	{
 		$term            = get_term_by('slug', $term, $tax);
+		
+		if (!$term)
+		{
+			return $this->sudoTerm();
+		}
+		
 		$term->permalink = get_term_link($term);
 
 		return $term;
@@ -140,6 +146,23 @@ class Context
 		$type->permalink = get_post_type_archive_link($typeSlug);
 
 		return $type;
+	}
+	
+	private function sudoTerm()
+	{
+		$term                   = new \stdClass();
+		$term->name             = 'desconhecido';
+		$term->description      = 'desconhecido';
+		$term->slug             = 'desconhecido';
+		$term->term_id          = 0;
+		$term->term_group       = 0;
+		$term->parent           = 0;
+		$term->count            = 0;
+		$term->taxonomy         = '';
+		$term->term_taxonomy_id = 0;
+		$term->permalink        = '#';
+
+		return $term;
 	}
 
 	public function single()
